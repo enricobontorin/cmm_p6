@@ -12,10 +12,17 @@ var imagesArray = ["img/aquila.jpg",
                    "img/ratto.jpg", 
                    "img/riccio.jpg"];
 
-//var ricorda[]; 
+var arraySelezione = [];
+/*var selezione = 
+  var tag;
+  var img;
+  var parola1;
+  var parola2;
+  var parola3;
+}*/
 
 function firstImage(){
-    //document.getElementByName("canvas").src = imagesArray[Math.random() * (imagesArray.length)];
+    //mostra l'immagine all'apertura della pagina
     var r = Math.floor(Math.random() * (imagesArray.length));
     document.canvas.src = imagesArray[r];
 }
@@ -28,11 +35,48 @@ function displayImage(){
     document.canvas.src = imagesArray[r];
 }
 
-/*function riempiArray(){
-  do{
+function generaOggetti(n){
+  if (n > imagesArray.length){
+    n = imagesArray.length;
+  }
+  if (n < 0){
+    n = 1;
+  }
+
+  var selezione = { img:"",
+                    tag:"",
+                    parola1:"",
+                    parola2:"",
+                    parola3:""
+                  };
+
+  for (var i = 0; i < n ; i++){
     var r = Math.floor(Math.random() * (imagesArray.length));
-    ricorda.push(r);
-    console.log(r);
-  } 
-  while (ricorda.includes(r)==false);
-}*/
+    selezione.img=imagesArray[r];
+    var tmpstr = imagesArray[r];
+    tmpstr = tmpstr.substring(4, tmpstr.length - 4);
+    selezione.tag= tmpstr;
+    console.log(selezione.tag);
+
+
+    var pr1 = Math.floor(Math.random() * (imagesArray.length));
+    tmpstr = imagesArray[pr1];
+    tmpstr = tmpstr.substring(4, tmpstr.length - 4);
+    selezione.parola1 = tmpstr;
+    console.log("parola1"+selezione.parola1);
+
+    var pr2 = Math.floor(Math.random() * (imagesArray.length));
+    tmpstr = imagesArray[pr2];
+    tmpstr = tmpstr.substring(4, tmpstr.length - 4);
+    selezione.parola2 = tmpstr;
+    console.log("parola2"+selezione.parola2);
+
+    var pr3 = Math.floor(Math.random() * (imagesArray.length));
+    tmpstr = imagesArray[pr3];
+    tmpstr = tmpstr.substring(4, tmpstr.length - 4);
+    selezione.parola3 = tmpstr;
+    console.log("parola3"+selezione.parola3);
+
+    arraySelezione.push(selezione);
+  }
+}
