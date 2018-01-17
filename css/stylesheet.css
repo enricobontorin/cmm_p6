@@ -1,0 +1,77 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+/*index.html*/
+#big-button-start-session {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 30%;              /* altezza             */
+  width: 30%;               /* larghezza           */
+  -webkit-box-shadow: 3px 7px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow:    3px 7px 0px rgba(0, 0, 0, 0.3);
+  box-shadow:         3px 7px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
+
+#usr {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 20%;              /* altezza             */
+  width: 60%;               /* larghezza           */
+  -webkit-box-shadow: 3px 7px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow:    3px 7px 0px rgba(0, 0, 0, 0.3);
+  box-shadow:         3px 7px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
+
+
+#wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/*game.html*/
+#container-btt {
+    height: 50%;
+    overflow: visible;
+    width: 100%;
+    /*background-color: green;*/
+    justify-content: center;
+    text-align: center;
+}
+
+#container-img {
+    height: 70%;
+    overflow: visible;
+    width: 100%;
+    /*background-color: red;*/
+}
+
+
+#my-img{
+  top : 5%;
+  height: 60%;
+  width: : 60%;
+  position:absolute;
+}
+
+.button-game {
+  height: 100%;              /* altezza             */
+  width: 90%;               /* larghezza           */
+  -webkit-box-shadow: 3px 7px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow:    3px 7px 0px rgba(0, 0, 0, 0.3);
+  box-shadow:         3px 7px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  padding: 20px;
+
+
+}
