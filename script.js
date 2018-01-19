@@ -8,6 +8,7 @@
 
 
 //Array di immmagini che contiene le immagini
+/*
 var imagesArray = ["img/aquila.jpg", 
                    "img/cavallo.jpg", 
                    "img/cerbiatto.jpg", 
@@ -20,23 +21,32 @@ var imagesArray = ["img/aquila.jpg",
                    "img/rana.jpg", 
                    "img/ratto.jpg", 
                    "img/riccio.jpg"];
-
+*/
+/*
 var arraySelezione = []; //Array che verrà popolato dalla funzione "genera oggetti"
-
+*/
 /*Funzione che carica la prima immagine appena si avvia la pagina*/
+
 function firstImage(){
+    /*
     //mostra l'immagine all'apertura della pagina
     var r = Math.floor(Math.random() * (imagesArray.length));
     document.canvas.src = imagesArray[r];
+    */
 }
 
+
 //funzione che restituisce un'immagine casuale senza controllare duplicati
+
 function displayImage(){
+    /*
     //creo un numero random da 0 al numero di immagini
     var r = Math.floor(Math.random() * (imagesArray.length));
     //mostra l'immagine da imagesArray array nel canvas image 
     document.canvas.src = imagesArray[r];
+    */
 }
+
 
 /*
 Genera una lista di oggetti che contengono
@@ -52,7 +62,25 @@ non ci sono duplicati tra tag/parola1/parola2/parola3
 function generaOggetti(n){
     //Ogni oggetto creato avrà la seguente struttura
     
+  var imagesArray = ["aquila", 
+                   "cavallo", 
+                   "cerbiatto", 
+                   "elefante", 
+                   "gatto", 
+                   "lama", 
+                   "maiale",  
+                   "orso", 
+                   "panda", 
+                   "rana", 
+                   "ratto", 
+                   "riccio"];
+  var arraySelezione = [];
   var ricordaArray = []; //memorizza gli elemeti già creati
+  var r;
+  var pr1;
+  var pr2;
+  var pr3;
+  //var tmpstr;
 
   //controllo sull'input del numero di domande
   if (n > imagesArray.length){
@@ -69,64 +97,54 @@ function generaOggetti(n){
                       parola2: "",
                       parola3: "",
                       time_start: "",
-                      time_end: ""
+                      time_end: "",
+                      parola_scelta: ""
                     };
 
-    console.log("ITERAZIONE "+i);
+    //console.log("ITERAZIONE " + i);
     //genero un numero per trovare un elemento nell'array e salvarlo
     do{ 
-      var r = Math.floor(Math.random() * (imagesArray.length));
+      r = Math.floor(Math.random() * (imagesArray.length));
     }
-    while (ricordaArray.includes(imagesArray[r])==true); //verifico che non sia già stato preso
+    while (ricordaArray.includes(imagesArray[r]) == true); //verifico che non sia già stato preso
     
-    selezione.img=imagesArray[r]; //salvo l'immagine 
+    selezione.img = "img/" + imagesArray[r] + ".jpg"; //salvo l'immagine 
     ricordaArray.push(imagesArray[r]); //mi ricordo quale elemento ho preso
-    var tmpstr = imagesArray[r]; //inizio procedura di "ritaglio del tag"
-    tmpstr = tmpstr.substring(4, tmpstr.length - 4); //tagli la stringa per avere solo il nome dell'immagine
-    selezione.tag= tmpstr;// salvo il tag
-    console.log("tag " + selezione.tag);
+    selezione.tag = imagesArray[r];// salvo il tag
+    //console.log("tag " + selezione.tag);
 
     //Estraggo la prima parola per la scelta
-    var pr1;
     do{ 
       pr1 = Math.floor(Math.random() * (imagesArray.length));
     }
-    while (selezione.img==imagesArray[pr1]); // verifico che non sia uguale al tag
-    tmpstr = imagesArray[pr1]; // inizio procedura di "ritaglio" della parola
-    tmpstr = tmpstr.substring(4, tmpstr.length - 4);
-    selezione.parola1 = tmpstr;
-    console.log("parola1 "+selezione.parola1);
+    while (selezione.img == imagesArray[pr1]); // verifico che non sia uguale al tag
+    selezione.parola1 = imagesArray[pr1];
+    //console.log("parola1 "+ selezione.parola1);
 
     //Estraggo la seconda parola per la scelta
-    var pr2;
     do{ 
       pr2 = Math.floor(Math.random() * (imagesArray.length));
     }
     while (pr2==pr1 || pr2==r); //verifico che non sia uguale al tag o alla prima parola
-    
-    tmpstr = imagesArray[pr2]; // ritaglio
-    tmpstr = tmpstr.substring(4, tmpstr.length - 4);
-    selezione.parola2 = tmpstr;
-    console.log("parola2 "+selezione.parola2);
+    selezione.parola2 = imagesArray[pr2];
+    //console.log("parola2 "+ selezione.parola2);
 
     //Estraggo la terza parola per la scelta
-    var pr3;
     do{ pr3 = Math.floor(Math.random() * (imagesArray.length));
     }
     while (pr3==pr2 || pr3==pr1 || pr3==r); //verifico che non sia uguale alle altre precendenti
-    tmpstr = imagesArray[pr3];
-    tmpstr = tmpstr.substring(4, tmpstr.length - 4);
-    selezione.parola3 = tmpstr; //ritaglio
-    console.log("parola3 "+selezione.parola3);
-      arraySelezione.push(selezione);
+    selezione.parola3 = imagesArray[pr3]; //ritaglio
+    //console.log("parola3 "+ selezione.parola3);
+    arraySelezione.push(selezione);
   }
-  
-  console.log(arraySelezione);
+  return arraySelezione;
+  //console.log(arraySelezione);
 }
 
 function getTimeNow(){
   var d = new Date();
   var t = d.getTime();
+  return t;
 }
 
 function diffTime(d1, d2){
@@ -134,4 +152,3 @@ function diffTime(d1, d2){
   /*diff /= 60;*/
   return Math.abs(Math.round(diff));  
 }
-
