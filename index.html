@@ -20,7 +20,7 @@
   <body>
     <div class="container" id="login">
       <div id="wrapper">
-        <input type="text" class="form-control" id="usr">
+        <input type="text" class="form-control-lg" id="usr" placeholder="Inserisci User Name">
         <button type="button" class="btn btn-primary" id ="big-button-start-session"><h1>Inizia Sessione</h1></button>
       </div>
     </div>
@@ -47,9 +47,15 @@
         </div>
       </div>
 
+      <div class="container" id="logout" style="display: none">
+        <div id="wrapper">
+          <button type="button" class="btn btn-success" id ="big-button-end-session" disabled><h1>Sessione Conclusa</h1></button>
+        </div>
+      </div>
 
   </body>
   <script src="./js/utility.js"></script>
+  <script src="./js/script.js"></script>
 </html>
 
 <!--<div class="col-4 text-center">
