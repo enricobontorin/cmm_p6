@@ -1,63 +1,3 @@
-/*var esercizi = [
-  {
-    link: "img/aquila.jpg",
-    corretta: "aquila",
-    sbagliate: ["cavallo", "cerbiatto", "elefante"]
-  }
-];*/
-
-
-//Array di immmagini che contiene le immagini
-/*
-var imagesArray = ["img/aquila.jpg", 
-                   "img/cavallo.jpg", 
-                   "img/cerbiatto.jpg", 
-                   "img/elefante.jpg", 
-                   "img/gatto.jpg", 
-                   "img/lama.jpg", 
-                   "img/maiale.jpg",  
-                   "img/orso.jpg", 
-                   "img/panda.jpg", 
-                   "img/rana.jpg", 
-                   "img/ratto.jpg", 
-                   "img/riccio.jpg"];
-*/
-/*
-var arraySelezione = []; //Array che verrà popolato dalla funzione "genera oggetti"
-*/
-/*Funzione che carica la prima immagine appena si avvia la pagina*/
-
-function firstImage(){
-    /*
-    //mostra l'immagine all'apertura della pagina
-    var r = Math.floor(Math.random() * (imagesArray.length));
-    document.canvas.src = imagesArray[r];
-    */
-}
-
-
-//funzione che restituisce un'immagine casuale senza controllare duplicati
-
-function displayImage(){
-    /*
-    //creo un numero random da 0 al numero di immagini
-    var r = Math.floor(Math.random() * (imagesArray.length));
-    //mostra l'immagine da imagesArray array nel canvas image 
-    document.canvas.src = imagesArray[r];
-    */
-}
-
-/*
-Genera una lista di oggetti che contengono
-percorso immagine
-tag
-parola1
-parola2
-parola3
-La funzione prevede il controllo sui duplicati
-non ci sono duplicati sui tag
-non ci sono duplicati tra tag/parola1/parola2/parola3
-*/
 function generaOggetti(n, imagesArray){
     //Ogni oggetto creato avrà la seguente struttura
     
@@ -140,14 +80,5 @@ function generaOggetti(n, imagesArray){
   console.log(arraySelezione);
 }
 
-function getTimeNow(){
-  var d = new Date();
-  var t = d.getTime();
-  return t;
-}
 
-function diffTime(d1, d2){
-  var diff =(d2 - d1) / 1000;
-  /*diff /= 60;*/
-  return Math.abs(Math.round(diff));  
-}
+module.exports = generaOggetti;
