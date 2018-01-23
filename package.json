@@ -1,0 +1,16 @@
+{
+  "name": "cmm_p6",
+  "version": "1.0.0",
+  "description": "cmm_p6_aa_2017_2018_bontorin_baggetto",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "enrico bontorin / stefano baggetto",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "js2xmlparser": "^3.0.0",
+    "mongoose": "^5.0.1"
+  }
+}

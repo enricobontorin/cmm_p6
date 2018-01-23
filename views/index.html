@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script   src="https://code.jquery.com/jquery-3.2.1.js"   integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="   crossorigin="anonymous"></script>
+      <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+      <link href="css/stylesheet.css" rel="stylesheet" />
+
+
+      <title>cmm_p6</title>
+  </head>
+  <body>
+    <!-- container della schemata di login -->
+    <div class="container" id="login">
+      <!-- div contente alert nel caso in cui non si inserisca user name -->
+      <div id="alertNoUsr" class="alert alert-danger alert-dismissable" style="display: none">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+         <h1>Attenzione! Inserire USER NAME per continuare</h1>
+      </div>
+      <!-- chiuso div contente alert nel caso in cui non si inserisca user name -->
+      <div id="wrapper">
+        <input type="text" class="form-control-lg" id="usr" placeholder="Inserisci User Name" required>
+        <button type="button" class="btn btn-primary" id ="big-button-start"><h1>Accedi</h1></button>
+      </div>
+    </div>
+    <!-- chiuso container della schemata di login -->
+
+    <!-- container della schemata con la tabella che elenca le varie sessioni -->
+    <div class="container" id="tableContainer" style="display: none">
+      <div id="wrapper">
+        <table class="table table-striped" id ="table">
+          <thead>
+            <tr>
+              <th scope="col">Data Assegnamento Gioco</th>
+              <th scope="col">Numero Parole</th>
+              <th scope="col">Play</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- chiuso container della schemata con la tabella che elenca le varie sessioni -->
+
+    <!-- container della schemata di inizio sessione -->
+    <div class="container" id="loginGame" style="display: none">
+      <div id="wrapper">
+        <button type="button" class="btn btn-primary" id ="big-button-start-session"><h1>Inizia Sessione</h1></button>
+      </div>
+    </div>
+    <!-- chiuso container della schemata di inizio sessione -->
+
+    <!-- container della schemata di gioco, strutturato con mezza pagina riservata all'immagine e mezza alle parole -->
+      <div id="container-img" style="display: none">
+        <div class="row justify-content-center">
+            <img src="" alt="" id="my-img">
+        </div>
+      </div>
+      <div id="container-btt" style="display: none">
+        <div class="row" id="instruction" >
+            <h1>Scegli tra le parole proposte quella che descrive l'immagine</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-xs-6">
+              <button value="" type="button" class="btn btn-primary btn-lg button-game" id ="B1"><h1></h1></button>
+            </div>
+            <div class="col-md-3 col-xs-6">
+              <button value="" type="button" class="btn btn-primary btn-lg button-game" id ="B2"><h1></h1></button>
+            </div>
+            <div class="col-md-3 col-xs-6">
+              <button value="" type="button" class="btn btn-primary btn-lg button-game" id ="B3"><h1></h1></button>
+            </div>
+            <div class="col-md-3 col-xs-6">
+              <button value="" type="button" class="btn btn-primary btn-lg button-game" id ="B4"><h1></h1></button>
+            </div>
+        </div>
+      </div>
+      <!-- chiuso container della schemata di gioco -->
+
+      <!-- container della schemata di fine sessione -->
+      <div class="container" id="logout" style="display: none">
+        <div id="wrapper">
+          <button type="button" class="btn btn-success" id ="big-button-end-session" disabled><h1>Sessione Conclusa</h1></button>
+        </div>
+      </div>
+      <!-- chiuso container della schemata di fine sessione -->
+
+      <!-- container della schemata che appare quando c'è un problema nelle richieste fetch -->
+      <div class="container" id="problem" style="display: none">
+        <div id="wrapper">
+          <button type="button" class="btn btn-danger" id ="big-button-end-session" disabled><h1>Problemi tecnici. Rilanciare sessione</h1></button>
+        </div>
+      </div>
+      <!-- chiuso container della schemata che appare quando c'è un problema nelle richieste fetch -->
+
+      <!-- container della schemata nel caso in cui non ci sia una sessione di gioco dispobile -->
+      <div class="container" id="noGame" style="display: none">
+        <div id="wrapper">
+          <button type="button" class="btn btn-info" id ="big-button-end-nosession" disabled><h1>Nessuna Sessione Disponibile</h1></button>
+        </div>
+      </div>
+      <!-- chiuso container della schemata nel caso in cui non ci sia una sessione di gioco dispobile -->
+
+  </body>
+  <!-- richiedo i due file di utility js necessari per far funzionare la web app -->
+  <script src="/javascript/utility.js"></script>
+  <script src="/javascript/script.js"></script>
+</html>
