@@ -32,7 +32,8 @@ $(document).ready(function(){
       }
       else{
       // prelevo user name
-      objLoad.id = document.getElementById("usr").value;
+      var val = document.getElementById("usr").value;
+      objLoad.id = val.toLowerCase();
       //nascondo il frame di login
       $("#login").hide("slow");
 
