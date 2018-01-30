@@ -5,6 +5,8 @@ var mongoose = require('mongoose');
 var GameSession = require('./session');
 var js2xmlparser = require("js2xmlparser");
 var xml = false;
+var fs = require('fs');
+var GeneraOggetti = require('./public/javascript/generaOggetti.js');
 
 // inizializzo un'instanza di mongoose e la relativa connessione al db di mLab
 mongoose.Promise = global.Promise;
@@ -25,11 +27,12 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+
 // setto la porta su cui trovare la mia applicazione
 var port = process.env.PORT || 8080;
 
 // includo le sottodirectory e lo porto tutte a livello principale
-// utile soprattutto per non avere path chilometrici
+// utile per non avere path chilometrici
 app.use(express.static('public'))
 app.use(express.static('views'))
 
@@ -41,6 +44,29 @@ app.get('/', (req, res) => {
 
 // definisco le mie API
 var router = express.Router();
+
+router.route('/vector/:number_img')
+  // accessibile tramite GET request -> http://localhost:8080/api/vector/:number_img)
+  // utilizzata per scopi interni
+  // ritorna un json del vettore di immagini di gioco prelevate dalla cartella delle immagini
+  // in maniera randomica e inoltre tramite generaOggetti vengono anche associate altre
+  // parole diverse da quella corretta per poi somminstrarle in un secondo momento all'utilizzatore
+
+  .get(function (req, res) {
+      var number_img = req.params.number_img;
+      var imagesArray = [];
+      var nomeImmagine;
+      var imgFolder = './public/images/';
+      fs.readdirSync(imgFolder).forEach(file => {
+        nomeImmagine = String(file);
+        nomeImmagine = nomeImmagine.slice(0, -4);
+        imagesArray.push(nomeImmagine);
+      })
+      //cerco nel db le sessioni assegnate a un particolare uid ancora non giocate
+      res.status(200);
+      res.json(GeneraOggetti(number_img, imagesArray));
+
+      });
 
 // rotta utile per il caricamento dei giochi, il caricamento dei risultati della sessione e per ottenere
 // i dati relativi al singolo utente sulle sessioni che non ha ancora fatto
@@ -105,7 +131,6 @@ router.route('/games')
       }
   });
 
-
   router.route('/games/:uid')
     // accessibile tramite GET request -> http://localhost:8080/api/games/:uid)
     // mi permette di ottenere le sessioni ancora non giocate da uno specifico uid
@@ -113,23 +138,13 @@ router.route('/games')
     .get(function (req, res) {
         //cerco nel db le sessioni assegnate a un particolare uid ancora non giocate
         GameSession.find({uid: req.params.uid, play: false}, function (err, gameSession) {
-            if (err) {
-              console.log("err");
-                        res.status(500).send(err)
-                    }
+            if (err) { res.status(500).send(err)}
             if (gameSession) {
                   // nel caso in cui non vi siano errori di connessione al server err500
                   // ritorno tutte le sessioni non ancora giocare di uno specifico uid
                   res.status(200);
                   res.json(gameSession);
             }
-            /*
-            //da vedere se toglierlo o meno
-            else {  //caro in cui non via siano sessioni a                 res.status(404);
-                res.json({ message: 'nogame' });
-
-            }*/
-
         });
     })
 
@@ -181,10 +196,7 @@ router.route('/games')
 
        // viene eseguita la query al DB
        GameSession.find(query , function (err, gameSession) {
-           if (err) {
-             console.log("err");
-                       res.status(500).send(err)
-                   }
+           if (err) { res.status(500).send(err) }
            if (gameSession) {
                   var objToReturn = [];
 
@@ -202,19 +214,12 @@ router.route('/games')
                     objToReturn.push(objTmp);
                   });
 
-
                  res.status(200);
 
                  if(xml != true) res.json(objToReturn);
                  else {res.send(js2xmlparser.parse("session", objToReturn));}
 
-
            }
-           /*else {  // In case no assignment was found with the given query
-               res.status(404);
-               res.json({ message: 'nogame' });
-           }*/
-
          });
      });
 

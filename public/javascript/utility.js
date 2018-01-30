@@ -2,7 +2,7 @@ $(document).ready(function(){
     // variabile che contiene il numero di immagini da caricare per la sessione di gioco corrente
     var objNumber;
     // variabile che contiene l'array di oggetti immagine generati casualmente di length objnumber
-    var arrayImg;
+    var arrayImg = [];
     // contatore del numero di immagini giocate
     var arrayCount = 0;
 
@@ -87,12 +87,40 @@ $(document).ready(function(){
         objLoad.time_stamp = this.value;
         // prelevo il numero di immagini
         objNumber = this.getAttribute("data-value");
-        // genero il vettore casuale di oggetti immagine
-        arrayImg = generaOggetti(objNumber);
 
-        // faccio sparire il container con la tabella e carico il bottone di inizio sessione
-        $("#tableContainer").hide("slow");
-        $("#loginGame").show("slow");
+        // fetch request ad un'apposita API nel server che mi ritorna
+        // un vettore di oggetti di gioco contentente immagini e parole
+        // che verranno mostrate all'utente.
+        var url = root + "/vector/" + objNumber;
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }})
+             .then((resp) => resp.json()) // Trasformo la risposta in formato json
+             .then(function(data) {
+               // parso la risposta in modo da passare da una risposta in formato JSON
+               // ad un array contente oggetti del tipo
+               // obj { img, tag, parola1, parola2, parola3, time_start
+                for(var i = 0; i < data.length; i++){
+                  var objTmp = {};
+                  console.log(data[i].img);
+                  objTmp.img = data[i].img;
+                  objTmp.tag = data[i].tag;
+                  objTmp.parola1 = data[i].parola1;
+                  objTmp.parola2 = data[i].parola2;
+                  objTmp.parola3 = data[i].parola3;
+                  objTmp.time_start = data[i].time_start;
+
+                  // inserimento dell'oggetto nell'array di immagini di gioco
+                  arrayImg.push(objTmp);
+                }
+
+                // faccio sparire il container con la tabella e carico il bottone di inizio sessione
+                $("#tableContainer").hide("slow");
+                $("#loginGame").show("slow");
+              })
 
     });
 
