@@ -17,8 +17,8 @@ $(document).ready(function(){
     };
 
     // root su cui andare a fare la richiesta fetch
-    var root = "http://localhost:8080/api";
-    // var root = "https://cmm-p6.herokuapp.com/api" //heroku url
+    //var root = "http://localhost:8080/api";
+    var root = "https://cmm-p6.herokuapp.com/api" //heroku url
 
     // quando viene cliccato il bottone che si presenta nella schemata di login
     // viene prelevato l'user name e viene fatta una richiesta ad una nostra API
