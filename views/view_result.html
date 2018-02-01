@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script   src="https://code.jquery.com/jquery-3.2.1.js"   integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="   crossorigin="anonymous"></script>
+      <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+
+      <style type="text/css">
+            .load {
+                height: 80%;
+                width: 80%;
+                top: 10%;
+                margin-left: 10%
+            }
+      </style>
+
+      <title>view_cmm_p6</title>
+  </head>
+  <body>
+    <form class="load">
+      <h1>Risultati delle sessioni</h1>
+      <!-- div che contengono i campi di input per il filtraggio dei risultati  -->
+      <div class="form-group">
+        <label for="uid">uid:</label>
+        <input type="text" class="form-control" id="uid_result">
+      </div>
+      <div class="form-group">
+        <label for="play">play:</label>
+        <select class="form-control" id="play_result">
+          <option></option>
+          <option>true</option>
+          <option>false</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="formato">formato dati:</label>
+        <select class="form-control" id="format_result">
+          <option>json</option>
+          <option>xml</option>
+        </select>
+      </div>
+      <!-- chiusi div che contengono i campi di input per il filtraggio dei risultati  -->
+
+      <button type="button" id="button-result" class="btn btn-primary">Ottieni risultati</button>
+      <div id="results" style="margin-top: 30px">
+        <textarea id="resultArea" rows="40" cols="80" style="border:none;" disabled></textarea>
+      </div>
+
+    </form>
+
+  </body>
+  <!-- includo il file necessario per eseguire la risposta e far comparire nel display i risultati -->
+  <script src="/javascript/view_result.js"></script>
+</html>

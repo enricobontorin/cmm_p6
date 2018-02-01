@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script   src="https://code.jquery.com/jquery-3.2.1.js"   integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="   crossorigin="anonymous"></script>
+      <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+
+      <style type="text/css">
+            .load {
+                height: 80%;
+                width: 80%;
+                top: 10%;
+                margin-left: 10%
+            }
+        </style>
+
+      <title>load_cmm_p6</title>
+  </head>
+  <body>
+    <form class="load">
+      <h1>Form di inserimento della sessione</h1>
+      <!-- div contente alert nel caso in cui non si inserisca username (rosso) e nel caso in cui
+      si carichi correttamente (verde)-->
+      <div class="form-group">
+        <div id="alert_noinput" class="alert alert-danger alert-dismissable" style="display: none">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+           <h1>Attenzione! Inserire uid</h1>
+        </div>
+        <div id="alert_okload" class="alert alert-success alert-dismissable" style="display: none">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+           <h1>Sessione caricata correttamente</h1>
+        </div>
+
+        <label for="uid">uid:</label>
+        <input type="text" class="form-control" id="uid_load">
+      </div>
+      <!-- chiuso div user name -->
+      <!-- div contentente input numerico, minimo valore per una sessione 1 immagine -->
+      <div class="form-group">
+        <label for="numero immagini">Numero immagini:</label>
+        <input type="number" min="1" class="form-control" id="number_img_load">
+      </div>
+      <!-- chiuso div input numerico  -->
+      <button type="button" id="button-load" class="btn btn-primary">Carica Sessione</button>
+    </form>
+  </body>
+  <!-- richiedo il file per far funzionare il caricamento -->
+  <script src="/javascript/load_session.js"></script>
+</html>
