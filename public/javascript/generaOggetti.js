@@ -43,7 +43,7 @@ function generaOggetti(n, imagesArray){
     do{
       pr1 = Math.floor(Math.random() * (imagesArray.length));
     }
-    while (selezione.img == imagesArray[pr1]); // verifico che non sia uguale al tag
+    while (r == pr1); // verifico che non sia uguale al tag
     selezione.parola1 = imagesArray[pr1]; // salvo la parola
 
     // Estraggo la seconda parola per la scelta

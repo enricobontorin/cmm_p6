@@ -71,7 +71,8 @@ router.route('/vector/:number_img')
 // rotta utile per il caricamento dei giochi, il caricamento dei risultati della sessione e per ottenere
 // i dati relativi al singolo utente sulle sessioni che non ha ancora fatto
 router.route('/games')
-// accessibilie tramite POST request -> http://localhost:8080/api/gameSession
+// accessibilie in locale tramite POST request -> http://localhost:8080/api/games
+// accessibilie in  remoto tramite POST request -> https://cmm-p6.herokuapp.com/api/games
 // permette di andare a caricare ed assegnare una sessione per un determianto paziente
 // si aspetta con body parameters uid (user id) e il numero di immagini assegnate
 // calcola automaticamente il giorno e l'ora dell'assegnamento
@@ -115,7 +116,8 @@ router.route('/games')
           res.json(sessCreated);
       });
   })
-  // accessibile tramite DELETE request -> http://localhost:8080/api/gameSession)
+  // accessibile in locale tramite DELETE request -> http://localhost:8080/api/games
+  // accessibile in remoto tramite DELETE request -> https://cmm-p6.herokuapp.com/api/games
   // API che permette di eliminare una specifica sessione di gioco di uno specifico utente
   .delete(function (req, res) {
       if((req.body.uid) && (req.body.time_stamp)){
@@ -132,7 +134,8 @@ router.route('/games')
   });
 
   router.route('/games/:uid')
-    // accessibile tramite GET request -> http://localhost:8080/api/games/:uid)
+    // accessibile in locale tramite GET request -> http://localhost:8080/api/games/:uid
+    // accessibile in remoto tramite GET request -> https://cmm-p6.herokuapp.com/api/games/:uid
     // mi permette di ottenere le sessioni ancora non giocate da uno specifico uid
     // utilizzata per scopi interni. Per quanto riguarda l'esterno è stata predisposta un'altra API apposita
     .get(function (req, res) {
@@ -148,7 +151,8 @@ router.route('/games')
         });
     })
 
-   // accessibile tramite PUT request -> http://localhost:8080/api/games/:uid)
+   // accessibile tramite in locale PUT request -> http://localhost:8080/api/games/:uid
+   // accessibile tramite in remoto PUT request -> https://cmm-p6.herokuapp.com/api/games/:uid
    .put(function (req, res) {
        // ogni volta che viene fatta una pull request, oltre all'id la query viene filtrata anche per
        // il time_stamp in modo che si riesca ad andare ad aggiornare la giusta sessione di gioco
@@ -178,7 +182,8 @@ router.route('/games')
 
    router.route('/results')
 
-     // accessibile tramite GET request -> http://localhost:8080/api/result)
+     // accessibile in locale tramite GET request -> http://localhost:8080/api/results
+     // accessibile in remoto tramite GET request -> http://cmm-p6.herokuapp.com/api/results )
      // API che rende disponibili i risultati delle sessioni
      .get(function (req, res) {
 

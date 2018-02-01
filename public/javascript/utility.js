@@ -17,7 +17,7 @@ $(document).ready(function(){
     };
 
     // root su cui andare a fare la richiesta fetch
-    //var root = "http://localhost:8080/api";
+    // var root = "http://localhost:8080/api";
     var root = "https://cmm-p6.herokuapp.com/api" //heroku url
 
     // quando viene cliccato il bottone che si presenta nella schemata di login
@@ -25,14 +25,15 @@ $(document).ready(function(){
     // che ritorna le sessioni di gioco che sono state assegnate allo specifico utente
     // inserito nell'user name
     $("#big-button-start").click(function(){
-      if(!document.getElementById("usr").value){
+
+      if(!($("#usr").val())){
         $("#alertNoUsr").show("slow");
         return;
 
       }
       else{
       // prelevo user name
-      var val = document.getElementById("usr").value;
+      var val = $("#usr").val();
       objLoad.id = val.toLowerCase();
       //nascondo il frame di login
       $("#login").hide("slow");
@@ -152,7 +153,7 @@ $(document).ready(function(){
             // prendo il tempo di fine e lo passo ad una funzione che mi ritorna il numero di secondi
             // passati dal tempo rilevato all'inizio della visualizzazione e il temp rilevarto dopo la decisione
             objLoad.tag = arrayImg[arrayCount-1].tag;
-            objLoad.scelta = document.getElementById("B1").value;
+            objLoad.scelta = $("#B1").val();
             objLoad.time_word = diffTime(arrayImg[arrayCount-1].time_start, getTimeNow());
 
             // faccio una fetch request, caricando l'oggetto creato di volta in volta
@@ -208,7 +209,7 @@ $(document).ready(function(){
         $("#B2").click(function() {
 
           objLoad.tag = arrayImg[arrayCount-1].tag;
-          objLoad.scelta = document.getElementById("B2").value;
+          objLoad.scelta = $("#B2").val();
           objLoad.time_word = diffTime(arrayImg[arrayCount-1].time_start, getTimeNow());
           console.log(objLoad);
 
@@ -257,7 +258,7 @@ $(document).ready(function(){
         $("#B3").click(function() {
 
           objLoad.tag = arrayImg[arrayCount-1].tag;
-          objLoad.scelta = document.getElementById("B3").value;
+          objLoad.scelta = $("#B3").val();
           objLoad.time_word = diffTime(arrayImg[arrayCount-1].time_start, getTimeNow());
           console.log(objLoad);
 
@@ -305,7 +306,7 @@ $(document).ready(function(){
         $("#B4").click(function() {
 
           objLoad.tag = arrayImg[arrayCount-1].tag;
-          objLoad.scelta = document.getElementById("B4").value;
+          objLoad.scelta = $("#B4").val();
           objLoad.time_word = diffTime(arrayImg[arrayCount-1].time_start, getTimeNow());
           console.log(objLoad);
 
