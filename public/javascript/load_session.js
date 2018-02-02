@@ -8,10 +8,10 @@ $(document).ready(function(){
   // nel caso vada tutto bene viene mostrato un alert verde
   $("#button-load").click(function(){
 
-    // controllo che sia settato l'user name  altrimenti faccio il display di un alert
-    // che mi segnala la mancanza di questo campo e non mi fa procedere
+    // viene controllato che sia settato l'user name  altrimenti viene fatto il display di un alert
+    // che  segnala la mancanza di questo campo e non fa procedere
     if(!(document.getElementById("uid_load").value)){
-      $("#alert_noinput").show("slow");
+      $("#alert_noinput").show("slow").delay(2000).hide("slow");
       return;
     }
     else{
@@ -19,7 +19,7 @@ $(document).ready(function(){
       var number_img_load = document.getElementById("number_img_load").value;
       var body = {"uid" : uid, "number_img_assigned" : number_img_load};
 
-      // faccio la richiesta all'API, con un body contenete numero di immagini e uid
+      // viene fatta la richiesta all'API, con un body contenete numero di immagini e uid
       fetch(rootLoad, {
           method: 'POST',
           headers: {
@@ -30,7 +30,7 @@ $(document).ready(function(){
       });
       $("#uid_load").val("");
       $("#number_img_load").val(1);
-      $("#alert_okload").show("slow");
+      $("#alert_okload").show("slow").delay(2000).hide("slow");
     }
   });
 });

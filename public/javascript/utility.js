@@ -12,53 +12,51 @@ $(document).ready(function(){
       id : "",
       tag: "",
       time_stamp: "",
-      scelta: "",
+      picked_word: "",
       time_word: ""
     };
 
-    // root su cui andare a fare la richiesta fetch
+    // root su cui viene fatta la richiesta fetch
     //var root = "http://localhost:8080/api";
     var root = "https://cmm-p6.herokuapp.com/api" //heroku url
 
     // quando viene cliccato il bottone che si presenta nella schemata di login
     // viene prelevato l'user name e viene fatta una richiesta ad una nostra API
     // che ritorna le sessioni di gioco che sono state assegnate allo specifico utente
-    // inserito nell'user name
+    // inserito nell'username
     $("#big-button-start").click(function(){
-
       if(!($("#usr").val())){
         $("#alertNoUsr").show("slow");
         return;
-
       }
       else{
-      // prelevo user name
+      // viene prelevato username
       var val = $("#usr").val();
       objLoad.id = val.toLowerCase();
-      //nascondo il frame di login
+      //viene nascosto il frame di login
       $("#login").hide("slow");
 
-      // faccio una fetch request e capisco se l'utente con l'uid prelevato ha sessioni assegnate
+      // viene fatta una fetch request in modo da capire  se l'utente con l'uid prelevato ha sessioni assegnate
       // se la risposta è vuota carico #noGame
-      // altrimenti faccio vedere la tabella con tutti i giochi assegnati
-      // tramite un bottone faccio poi decidere a quale gioco vuole giocare
+      // altrimenti viene fatta vedere la tabella con tutti i giochi assegnati
+      // tramite un bottone viene data la possibilità all'utente di decidere a quale gioco vuole giocare
 
-      var url = root + "/games/" + objLoad.id; //URL a cui fare la fetch request sullo specifico utente
+      var url = root + "/games/" + objLoad.id; //URL a cui viene fatta la fetch request sullo specifico utente
       fetch(url, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json'
           }
-      })   .then((resp) => resp.json()) // Trasformo la risposta in formato json
+      })   .then((resp) => resp.json()) // viene trasformata la risposta in formato json
            .then(function(data) {
-             // controllo che via siano giochi assegnati ad uno specifico id
+             // viene controllato che vi siano giochi assegnati ad uno specifico id
                if(!(data[0] === undefined)){
 
-                  // se vi sono giochi assegnati, scorro l'array di risposta e vado a mettere i dati nella tabella
+                  // se vi sono giochi assegnati, viene scorso l'array di risposta e vengono messi i dati nella tabella
                   data.map(function(ex){
 
-                    // creo la tabella
+                    // viene creata la tabella
                     var button = '<button value="'+ ex.time_stamp + '" data-value ="'+ ex.number_img_assigned +'" type="button" class="btn-det btn btn-primary btn-lg button-game"><h1>Gioca</h1></button>';
                     var tr = "<tr><td><h1>" + ex.time_stamp + "</h1></td>" +
                              "<td><h1>" + ex.number_img_assigned + "</h1></td>" +
@@ -68,11 +66,11 @@ $(document).ready(function(){
 
 
                  });
-                 // rendo visibile la tabella una volta creata
+                 // viene resa visibile la tabella una volta creata
                  $("#tableContainer").show("slow");
                }
-               // nel caso in cui un utente non abbia giochi assegnati carico la schemata con cui comunico che
-               // non vi sono sessioni assegnate a quello specifico utente
+               // nel caso in cui un utente non abbia giochi assegnati viene caricata la schemata con cui
+               //viene comunicato che non vi sono sessioni assegnate a quello specifico utente
                else {
                  $("#noGame").show("slow");
                }
@@ -84,12 +82,12 @@ $(document).ready(function(){
     // da caricare
     $('#tableContainer').on('click', 'button', function(){
 
-        // prelevo il timestamp che mi permette di capire la giusta sessione
+        // viene prelevato il timestamp che mi permette di capire la giusta sessione
         objLoad.time_stamp = this.value;
-        // prelevo il numero di immagini
+        // viene prelevato il numero di immagini
         objNumber = this.getAttribute("data-value");
 
-        // fetch request ad un'apposita API nel server che mi ritorna
+        // fetch request ad un'apposita API nel server che ritorna
         // un vettore di oggetti di gioco contentente immagini e parole
         // che verranno mostrate all'utente.
         var url = root + "/vector/" + objNumber;
@@ -99,9 +97,9 @@ $(document).ready(function(){
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             }})
-             .then((resp) => resp.json()) // Trasformo la risposta in formato json
+             .then((resp) => resp.json()) // viene trasformata la risposta in formato json
              .then(function(data) {
-               // parso la risposta in modo da passare da una risposta in formato JSON
+               // viene parsata la risposta in modo da passare da una risposta in formato JSON
                // ad un array contente oggetti del tipo
                // obj { img, tag, parola1, parola2, parola3, time_start
                 for(var i = 0; i < data.length; i++){
@@ -109,54 +107,54 @@ $(document).ready(function(){
                   console.log(data[i].img);
                   objTmp.img = data[i].img;
                   objTmp.tag = data[i].tag;
-                  objTmp.parola1 = data[i].parola1;
-                  objTmp.parola2 = data[i].parola2;
-                  objTmp.parola3 = data[i].parola3;
+                  objTmp.word1 = data[i].word1;
+                  objTmp.word2 = data[i].word2;
+                  objTmp.word3 = data[i].word3;
                   objTmp.time_start = data[i].time_start;
 
                   // inserimento dell'oggetto nell'array di immagini di gioco
                   arrayImg.push(objTmp);
                 }
 
-                // faccio sparire il container con la tabella e carico il bottone di inizio sessione
+                // viene nascosto il container con la tabella e caricato il bottone di inizio sessione
                 $("#tableContainer").hide("slow");
                 $("#loginGame").show("slow");
               })
 
     });
 
-    // bottone di inizio sessione, una volta cliccato lo nascondo e faccio partire la prima immagine
-    // andando a popolare bottoni con le parole e caricando l'immagine dell'animale
+    // bottone di inizio sessione, una volta che viene cliccato viene nascondo e viene fatta partire la prima immagine
+    // popolando bottoni con le parole e caricando l'immagine dell'animale
     $("#big-button-start-session").click(function(){
         $("#loginGame").hide("slow", function() {
 
-          // mixo i bottoni in modo che la parola esatta non capiti sempre sul primo
+          // vengono mixati i bottoni in modo che la parola esatta non capiti sempre sul primo bottone
           var arrayMixButton = getMixWord(arrayImg[arrayCount]);
 
           $("#B1").changeValue(arrayMixButton[0]);
           $("#B2").changeValue(arrayMixButton[1]);
           $("#B3").changeValue(arrayMixButton[2]);
           $("#B4").changeValue(arrayMixButton[3]);
-          $("#my-img").attr("src", arrayImg[arrayCount].img); // carico l'immagine
+          $("#my-img").attr("src", arrayImg[arrayCount].img); // viene caricata l'immagine
           $("#container-img").show("slow");
           $("#container-btt").show("slow");
 
-          // prendo il tempo di inizio visualizzazione della foto
+          // viene preso il tempo di inizio visualizzazione della foto
           arrayImg[arrayCount].time_start = getTimeNow();
           arrayCount++;
 
         });
 
         $("#B1").click(function() {
-            // una volta che l'utente prende la decisione prelevo dal vettore con le immagini
-            // la corretta parola, prelevo la scelta (prelevando il valore del bottone cliccato)
-            // prendo il tempo di fine e lo passo ad una funzione che mi ritorna il numero di secondi
+            // una volta che l'utente prende la decisione viene prelevato dal vettore con le immagini
+            // la corretta parola, viene prelevata la scelta (prelevando il valore del bottone cliccato)
+            // viene preso  il tempo di fine e viene passato ad una funzione che mi ritorna il numero di secondi
             // passati dal tempo rilevato all'inizio della visualizzazione e il temp rilevarto dopo la decisione
             objLoad.tag = arrayImg[arrayCount-1].tag;
-            objLoad.scelta = $("#B1").val();
+            objLoad.picked_word = $("#B1").val();
             objLoad.time_word = diffTime(arrayImg[arrayCount-1].time_start, getTimeNow());
 
-            // faccio una fetch request, caricando l'oggetto creato di volta in volta
+            // viene fatta una fetch request, caricando l'oggetto creato di volta in volta
             // in modo che se l'utente per qualche motivo esce i dati rimangono salvati
             var url = root + "/games/" + objLoad.id;
             fetch(url, {
@@ -168,7 +166,7 @@ $(document).ready(function(){
                 body: JSON.stringify(objLoad)
             })  .then((resp) => resp.json())
                 .then(function(data){
-                  // caso in cui dal server non ricevo una conferma di avvenuto caricamento
+                  // caso in cui dal server non si riceva una conferma di avvenuto caricamento
                   if(data.status!= 200){
                     $("#container-img").hide("slow");
                     $("#container-btt").hide("slow");
@@ -177,9 +175,9 @@ $(document).ready(function(){
                 });
 
 
-            // controllo di non essere all'ultimo elemento di un array
-            // se non è così procedo caricando l'immagine successiva e andando a modificare i bottoni
-            // faccio partire il nuovo timer per l'immagine successiva
+            // viene controllato di non essere all'ultimo elemento di un array
+            // se non è così viene caricata l'immagine successiva andando a modificare i bottoni
+            // viene fatto partire il nuovo timer per l'immagine successiva
             if(arrayCount < objNumber){
 
               var arrayMixButton = getMixWord(arrayImg[arrayCount]);
@@ -195,8 +193,8 @@ $(document).ready(function(){
 
             }
             else{
-              // caso in cui ho raggiunto il numero di elementi della Sessione
-              // faccio sparire i container di immagini e bottoni e carico
+              // caso in cui viene raggiunto il numero di elementi della Sessione
+              // viene nascosto i container di immagini e bottoni e viene caricato
               // quello con la scritta sessione terminata
               $("#container-img").hide("slow");
               $("#container-btt").hide("slow");
@@ -209,7 +207,7 @@ $(document).ready(function(){
         $("#B2").click(function() {
 
           objLoad.tag = arrayImg[arrayCount-1].tag;
-          objLoad.scelta = $("#B2").val();
+          objLoad.picked_word = $("#B2").val();
           objLoad.time_word = diffTime(arrayImg[arrayCount-1].time_start, getTimeNow());
           console.log(objLoad);
 
@@ -258,7 +256,7 @@ $(document).ready(function(){
         $("#B3").click(function() {
 
           objLoad.tag = arrayImg[arrayCount-1].tag;
-          objLoad.scelta = $("#B3").val();
+          objLoad.picked_word = $("#B3").val();
           objLoad.time_word = diffTime(arrayImg[arrayCount-1].time_start, getTimeNow());
           console.log(objLoad);
 
@@ -306,7 +304,7 @@ $(document).ready(function(){
         $("#B4").click(function() {
 
           objLoad.tag = arrayImg[arrayCount-1].tag;
-          objLoad.scelta = $("#B4").val();
+          objLoad.picked_word = $("#B4").val();
           objLoad.time_word = diffTime(arrayImg[arrayCount-1].time_start, getTimeNow());
           console.log(objLoad);
 
@@ -353,7 +351,7 @@ $(document).ready(function(){
     });
 });
 
-// jQuery prototipo che mi permette di cambiare al volo il valore di bottoni e il loro testo
+// jQuery prototipo che permetto di cambiare al volo il valore di bottoni e il loro testo
 // che viene visualizzato dall'utente
 $.fn.changeValue = function(v1) {
   $(this).val(v1);

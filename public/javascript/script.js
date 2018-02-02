@@ -17,7 +17,7 @@ function diffTime(d1, d2){
 // utilizzata in quanto l'oggetto contentenete l'immagine corrente altrimenti
 // verrebbe visualizzata sempre la giusta parola associata all'immagine al primo posto
 function getMixWord(objImg){
-  var wordList = [objImg.tag, objImg.parola1, objImg.parola2, objImg.parola3];
+  var wordList = [objImg.tag, objImg.word1, objImg.word2, objImg.word3];
   shuffle(wordList);
   return wordList;
 }

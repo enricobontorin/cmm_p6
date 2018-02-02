@@ -6,7 +6,7 @@ var GameSession = require('./session');
 var js2xmlparser = require("js2xmlparser");
 var xml = false;
 var fs = require('fs');
-var GeneraOggetti = require('./public/javascript/generaOggetti.js');
+var CreateObj = require('./public/javascript/createObj.js');
 var CountFileImg = require('./public/javascript/countFile.js');
 var imgFolder = './public/images/';
 
@@ -56,14 +56,14 @@ router.route('/vector/:number_img')
   .get(function (req, res) {
       var number_img = req.params.number_img;
       var imagesArray = [];
-      var nomeImmagine;
+      var nameImg;
       fs.readdirSync(imgFolder).forEach(file => {
-        nomeImmagine = String(file);
-        nomeImmagine = nomeImmagine.slice(0, -4);
-        imagesArray.push(nomeImmagine);
+        nameImg = String(file);
+        nameImg = nomeImmagine.slice(0, -4);
+        imagesArray.push(nameImg);
       })
       res.status(200);
-      res.json(GeneraOggetti(number_img, imagesArray));
+      res.json(CreateObj(number_img, imagesArray));
 
       });
 
@@ -79,19 +79,19 @@ router.route('/games')
 
       //viene creato un timeStamp della richiesta
       var data = new Date();
-      var ore, min, sec, giorno, mese, anno, full;
-      anno = data.getFullYear();
-      mese = data.getMonth() + 1; //js conta i mesi da 0 a 11
-      giorno = data.getDate();
-      ore = data.getHours();
+      var hours, min, sec, day, month, year, full;
+      year = data.getFullYear();
+      month = data.getMonth() + 1; //js conta i mesi da 0 a 11
+      day = data.getDate();
+      hours = data.getHours();
       min = data.getMinutes();
       sec = data.getSeconds();
       if (sec < 10) sec = "0" + sec;
       if (min < 10) min = "0" + min;
-      if (ore < 10) ore = "0" + ore;
-      if (giorno < 10) giorno = "0" + giorno;
-      if (mese < 10) mese = "0" + mese;
-      full = anno + "/" + mese + "/" + giorno + "-" + ore + ":" + min + ":" + sec;
+      if (hours < 10) hours = "0" + hours;
+      if (day < 10) day = "0" + day;
+      if (month < 10) month = "0" + month;
+      full = year + "/" + month + "/" + day + "-" + hours + ":" + min + ":" + sec;
 
       // viene creata una nuova instanza di tipo GameSession, che è la forma del documento che ho definito
       // per poi salvare i dati nel db, e vado ad assegnare i parametri ricevuti e quelli con valore di default
@@ -106,11 +106,11 @@ router.route('/games')
       // cartella non finisce il suo lavoro e poi, dopo il then, riparte tutto andando a settare i parametri corretti
       // e caricando la sessione nel db
       CountFileImg(imgFolder).then(function(number_img_folder){
-        // controllo che il numero di immagini per la sessione sia maggiore o uguale a uno
+        // viene controllato che il numero di immagini per la sessione sia maggiore o uguale a uno
         // e minore o uguale del numero di immagini presenti nella cartella delle immagini di gioco
-        // controlo che sia un intero altrimenti tolgo la parte dopo la virgola
-        // controllo che non sia null, in tutti i casi in cui sia minore del minimo
-        // null o maggiore del massimo imposto il valore nel limite
+        // viene controllato che sia un intero altrimenti tolgo la parte dopo la virgola
+        // vienen controllato  che non sia null, in tutti i casi in cui sia minore del minimo
+        // null o maggiore del massimo viene impostato il valore nel limite
         //caso in cui non sia un numero
         if(isNaN(req.body.number_img_assigned)) gameSession.number_img_assigned = 1;
         //caso in cui sia un numero, lo parso a intero e poi faccio le valutazioni
@@ -173,7 +173,7 @@ router.route('/games')
             if (err) { res.status(500).send(err)}
             if (gameSession) {
                   // nel caso in cui non vi siano errori di connessione al server err500
-                  // ritorno tutte le sessioni non ancora giocare di uno specifico uid
+                  // vengono ritornate tutte le sessioni non ancora giocare di uno specifico uid
                   res.status(200);
                   res.json(gameSession);
             }
@@ -190,13 +190,13 @@ router.route('/games')
 
            // vengo aggiornati i vari campi, viene inoltre controllata la parola scelta se
            // corrisponde alla parola giusta, in caso negativo viene incrementato il numero di errori
-           if(req.body.scelta != req.body.tag) gameSession[0].number_error++;
+           if(req.body.picked_word != req.body.tag) gameSession[0].number_error++;
            gameSession[0].time_total += req.body.time_word;
            gameSession[0].play = true;
 
-           // creo l'oggetto immagine per poi inserirlo e tenere traccia di
+           // viene creato l'oggetto immagine per poi inserirlo e tenere traccia di
            // ogni singola immagine proposta, parola scelta  e relativo tempo
-           var obj = '{ "tag": "' + req.body.tag + '", "scelta": "' + req.body.scelta + '", "time_word": "' + req.body.time_word + 's"}';
+           var obj = '{ "tag": "' + req.body.tag + '", "scelta": "' + req.body.picked_word + '", "time_word": "' + req.body.time_word + 's"}';
            gameSession[0].img.push(JSON.parse(obj));
            gameSession[0].number_img_done++;
 
@@ -261,9 +261,9 @@ router.route('/games')
 // abilitando CORS il mio server può ricevere richieste da altri domini, altrimenti non sarebbe abilitato
 app.use(function (req, res, next) {
     // viene stampato in console del server che ho ricevuto una richiesta
-    console.log('Ricevuto richiesta.');
+    console.log('Received request.');
 
-    //abilito CORS
+    // viene abilitato il CORS
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
@@ -276,12 +276,12 @@ app.use(function (req, res, next) {
             xml = true;
     }
 
-    //res.header('Content-Type', 'application/json');
+    // res.header('Content-Type', 'application/json');
     if (req.method == 'OPTIONS') {
         res.header('Access-Control-Allow-Methods', 'PUT, POST ,DELETE');
         return res.status(200).json({});
     }
-    // indirizziamo le richieste alla rotta successiva
+    // vengono indirizzate le richieste alla rotta successiva
     next();
 });
 
@@ -302,4 +302,4 @@ app.use((err, req, res, next) => {
 
 // viene avviato il servizio sulla giusta porta
 app.listen(port);
-console.log('Avviato servizio sulla porta ' + port);
+console.log('Server on, port: ' + port);

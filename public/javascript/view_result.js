@@ -11,12 +11,12 @@ $(document).ready(function(){
     var application = "application/json";
 
 
-    // prelevo i campi di filtraggio
+    // vengono prelevati i campi di filtraggio
     if($("#uid_result").val()) uid = $("#uid_result").val();
     if($("#play_result").val()) play = $("#play_result").val();
     if($("#format_result").val() != "json" ) application = "application/xml";
 
-    // compongo la query
+    // viene composta la query
     if((uid != "") && (play != ""))
         rootLoad += "?uid=" + uid + "&play=" + play;
     else if((uid != "") && (play == ""))
@@ -24,7 +24,7 @@ $(document).ready(function(){
     else if((uid == "") && (play != ""))
         rootLoad += "?play=" + play;
 
-    // eseguo la fetch request
+    // viene eseguita la fetch request
     fetch(rootLoad, {
         method: 'GET',
         headers: {
@@ -33,16 +33,16 @@ $(document).ready(function(){
         },
     })
       // se il formato richiesto è json converto in json il risultato
-      // altrimenti faccio un text con l'XML
+      // altrimenti viene fatto un text con l'XML
       .then((resp) =>{if(application == "application/json") return resp.json()
                        else return resp.text()})
       .then(function(data) {
         // caso json
         if(application == "application/json"){
-          // svuoto la textarea
+          // viene svuotata la textarea
           $("#results").replaceWith('<div id="results" style="margin-top: 30px"><textarea disabled id="resultArea" rows="40" cols="80" style="border:none;"></textarea></div>')
 
-          // scorro tutta la risposta in json e aggiungo alla text area tutte le sessioni json
+          // viene scorsa tutta la risposta in json e vengono aggiunte alla text area tutte le sessioni json
           // che la query ha ritornato
           data.map(function(element){
             $("#resultArea").append(JSON.stringify(element, null, 4) + "\n");
@@ -51,7 +51,7 @@ $(document).ready(function(){
 
         // caso xml
         else if(application == "application/xml"){
-          // svuoto la textarea
+          // viene svuotata la textarea
           $("#results").replaceWith('<div id="results" style="margin-top: 30px"><textarea disabled id="resultArea" rows="40" cols="80" style="border:none;"></textarea></div>')
 
           // viene aggiunto \n dove necessario
@@ -65,14 +65,14 @@ $(document).ready(function(){
               .replace(/(<\/[^>]+>|<[^>]+\/>)(<[^>]+>)/g,'$1\n$2');
           xmlArr = xmlString.split('\n');
 
-          // indento in maniera corretta ogni linea
+          // viene indentata in maniera corretta ogni linea
           var tabs = '';          // indentazione iniziale
           var start = 0;          // linea iniziale
           //if (/^<[?]xml/.test(xmlArr[0])) start++;    // da usare nel caso la prima linea non sia l'header
 
-          //scorro tutte le linee
+          //vengono scorse tutte le linee
           for (var i = start; i < xmlArr.length; i++) {
-              var line = xmlArr[i].trim();    //rimuovo eventuali spazi
+              var line = xmlArr[i].trim();    //vengono rimossi eventuali spazi
               if (/^<[/]/.test(line)) {
                   // se la linea è un tag di chiusura
                   // viene rimosso un tab dall'indentazione corrente
@@ -92,9 +92,9 @@ $(document).ready(function(){
               }
           }
 
-          // ritrasformo l'array in stringa e lo stampo
+          // viene ritrasformato l'array in stringa e lo stampo
           var r = xmlArr.join('\n');
-          // aggiungo il testo alla textarea per renderlo visibile
+          // viene aggiunto il testo alla textarea per renderlo visibile
           $("#resultArea").text(r);
         }
       })
