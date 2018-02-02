@@ -257,8 +257,7 @@ router.route('/games')
          });
      });
 
-// middleware route to support CORS and preflighted requests
-// abilito il middleware route affinche supporti CORS e le richieste preflighted
+// viene abilitato il middleware route affinche supporti CORS e le richieste preflighted
 // abilitando CORS il mio server può ricevere richieste da altri domini, altrimenti non sarebbe abilitato
 app.use(function (req, res, next) {
     // viene stampato in console del server che ho ricevuto una richiesta

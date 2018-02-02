@@ -1,4 +1,4 @@
-// Funzione generaOggetti che, dato un numero n e un array contentenete il nome delle immagini,
+// funzione generaOggetti che, dato un numero n e un array contentenete il nome delle immagini,
 // fornisce un array di oggetti. Ogni oggetto rappresenta uno step del gioco
 function generaOggetti(n, imagesArray){
 
@@ -16,9 +16,9 @@ function generaOggetti(n, imagesArray){
   if (n <= 0){
     n = 1;
   }
-  // Ciclo di popolamento dell'array
+  // ciclo di popolamento dell'array
   for (var i = 0; i < n ; i++){
-    // Ogni elemento dell'array da ritornare ha la seguente struttura
+    // ogni elemento dell'array da ritornare ha la seguente struttura
     var selezione = { img: "", // percorso immagine
                       tag: "", // tag dell'immagine (parola corretta)
                       parola1: "", // parole per la selezione
@@ -39,21 +39,21 @@ function generaOggetti(n, imagesArray){
     ricordaArray.push(imagesArray[r]); // mi ricordo quale elemento ho preso
     selezione.tag = imagesArray[r]; // salvo il tag
 
-    // Estraggo la prima parola per la scelta
+    // estraggo la prima parola per la scelta
     do{
       pr1 = Math.floor(Math.random() * (imagesArray.length));
     }
     while (r == pr1); // verifico che non sia uguale al tag
     selezione.parola1 = imagesArray[pr1]; // salvo la parola
 
-    // Estraggo la seconda parola per la scelta
+    // estraggo la seconda parola per la scelta
     do{
       pr2 = Math.floor(Math.random() * (imagesArray.length));
     }
     while (pr2==pr1 || pr2==r); // verifico che non sia uguale al tag o alla prima parola
     selezione.parola2 = imagesArray[pr2]; // salvo la parola
 
-    // Estraggo la terza parola per la scelta
+    // estraggo la terza parola per la scelta
     do{ pr3 = Math.floor(Math.random() * (imagesArray.length));
     }
     while (pr3==pr2 || pr3==pr1 || pr3==r); // verifico che non sia uguale alle altre precendenti
