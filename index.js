@@ -59,7 +59,7 @@ router.route('/vector/:number_img')
       var nameImg;
       fs.readdirSync(imgFolder).forEach(file => {
         nameImg = String(file);
-        nameImg = nomeImmagine.slice(0, -4);
+        nameImg = nameImg.slice(0, -4);
         imagesArray.push(nameImg);
       })
       res.status(200);
