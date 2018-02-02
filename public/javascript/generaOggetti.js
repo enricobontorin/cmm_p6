@@ -13,7 +13,7 @@ function generaOggetti(n, imagesArray){
   if (n > imagesArray.length){
     n = imagesArray.length;
   }
-  if (n < 0){
+  if (n <= 0){
     n = 1;
   }
   // Ciclo di popolamento dell'array

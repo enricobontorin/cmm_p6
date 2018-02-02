@@ -3,7 +3,7 @@ $(document).ready(function(){
 
   $("#button-result").click(function(){
     // root su cui andare a fare la richiesta fetch
-    //var rootLoad = "http://localhost:8080/api/results";
+    // var rootLoad = "http://localhost:8080/api/results";
     var rootLoad = "https://cmm-p6.herokuapp.com/api/results" //heroku url
 
     var uid = "";

@@ -7,8 +7,10 @@ var js2xmlparser = require("js2xmlparser");
 var xml = false;
 var fs = require('fs');
 var GeneraOggetti = require('./public/javascript/generaOggetti.js');
+var CountFileImg = require('./public/javascript/countFile.js');
+var imgFolder = './public/images/';
 
-// inizializzo un'instanza di mongoose e la relativa connessione al db di mLab
+// viene inizializzato un'instanza di mongoose e la relativa connessione al db di mLab
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://cmm_p6:cmm_p6@ds263137.mlab.com:63137/cmm_p6'/*, options*/);
 const db = mongoose.connection;
@@ -19,30 +21,30 @@ db.once('open', () => {
   console.log('DB connected successfully!');
 });
 
-// inializzo express che mi permetterà di andare a lavorare con le rotte
+// viene inizializzato express che mi permetterà di andare a lavorare con le rotte
 const app = express();
 
-// configuro il bodyParser()
+// viene configurato il bodyParser()
 // utile quando si ricevono richieste di tipo POST & PUT
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-// setto la porta su cui trovare la mia applicazione
+// viene settata la porta su cui trovare la mia applicazione
 var port = process.env.PORT || 8080;
 
-// includo le sottodirectory e lo porto tutte a livello principale
+// vengono incluse le sottodirectory e lo porto tutte a livello principale
 // utile per non avere path chilometrici
 app.use(express.static('public'))
 app.use(express.static('views'))
 
-// lancio il gioco caricando index.html
+// viene lanciato il gioco caricando index.html
 app.get('/', (req, res) => {
   // res.writeHead(200, {'Content-Type': 'text/plain'});
   res.redirect('index.html')
 });
 
-// definisco le mie API
+// vengoono definite le API
 var router = express.Router();
 
 router.route('/vector/:number_img')
@@ -51,18 +53,15 @@ router.route('/vector/:number_img')
   // ritorna un json del vettore di immagini di gioco prelevate dalla cartella delle immagini
   // in maniera randomica e inoltre tramite generaOggetti vengono anche associate altre
   // parole diverse da quella corretta per poi somminstrarle in un secondo momento all'utilizzatore
-
   .get(function (req, res) {
       var number_img = req.params.number_img;
       var imagesArray = [];
       var nomeImmagine;
-      var imgFolder = './public/images/';
       fs.readdirSync(imgFolder).forEach(file => {
         nomeImmagine = String(file);
         nomeImmagine = nomeImmagine.slice(0, -4);
         imagesArray.push(nomeImmagine);
       })
-      //cerco nel db le sessioni assegnate a un particolare uid ancora non giocate
       res.status(200);
       res.json(GeneraOggetti(number_img, imagesArray));
 
@@ -78,7 +77,7 @@ router.route('/games')
 // calcola automaticamente il giorno e l'ora dell'assegnamento
   .post(function (req, res) {
 
-      //creo timeStamp richiesta
+      //viene creato un timeStamp della richiesta
       var data = new Date();
       var ore, min, sec, giorno, mese, anno, full;
       anno = data.getFullYear();
@@ -94,27 +93,57 @@ router.route('/games')
       if (mese < 10) mese = "0" + mese;
       full = anno + "/" + mese + "/" + giorno + "-" + ore + ":" + min + ":" + sec;
 
-
-
-      // creo una nuova instanza di tipo GameSession, che è la forma del documento che ho definito
+      // viene creata una nuova instanza di tipo GameSession, che è la forma del documento che ho definito
       // per poi salvare i dati nel db, e vado ad assegnare i parametri ricevuti e quelli con valore di default
       var gameSession = new GameSession();
 
-      gameSession.uid = req.body.uid;
-      gameSession.number_img_assigned = req.body.number_img_assigned;
-      gameSession.time_stamp = full;
-      gameSession.play = false;
-      gameSession.number_error = 0;
-      gameSession.number_img_done = 0;
-      gameSession.time_total = 0;
-      gameSession.img = [];
 
-      // salvo la nuova sessione e controllo che sia stata creata correttamente
-      gameSession.save(function (err, sessCreated) {
-          if (err) { res.status(500).send(err); }
-          res.status(200);
-          res.json(sessCreated);
-      });
+      // il conto dei file all'interno della cartella delle immagini viene fatto utilizzando
+      // il meccanismo delle promise, che è molto utilizzato in js, in quanto essendo a sincrono
+      // altrimenti, come in questo caso, quando di mezzo ci sono letture su file nelle directory,
+      // il motore js va avanti a fare dell'altro e quindi il numero delle immagini arriva solamente dopo la sua valutazione
+      // in questo modo si blocca tutto il sistema fino a che la funzione che fa il calcolo del numero di file in una
+      // cartella non finisce il suo lavoro e poi, dopo il then, riparte tutto andando a settare i parametri corretti
+      // e caricando la sessione nel db
+      CountFileImg(imgFolder).then(function(number_img_folder){
+        // controllo che il numero di immagini per la sessione sia maggiore o uguale a uno
+        // e minore o uguale del numero di immagini presenti nella cartella delle immagini di gioco
+        // controlo che sia un intero altrimenti tolgo la parte dopo la virgola
+        // controllo che non sia null, in tutti i casi in cui sia minore del minimo
+        // null o maggiore del massimo imposto il valore nel limite
+        //caso in cui non sia un numero
+        if(isNaN(req.body.number_img_assigned)) gameSession.number_img_assigned = 1;
+        //caso in cui sia un numero, lo parso a intero e poi faccio le valutazioni
+        else {
+          var n_img_input = parseInt(Math.round(parseFloat(req.body.number_img_assigned)));
+          if(req.body.number_img_assigned >= 1 && n_img_input <= number_img_folder && number_img_folder > 0)
+            gameSession.number_img_assigned = n_img_input;
+          else if (req.body.number_img_assigned < 1)
+            gameSession.number_img_assigned = 1;
+          else if (n_img_input > number_img_folder && number_img_folder > 0 )
+            gameSession.number_img_assigned = number_img_folder;
+          else
+            gameSession.number_img_assigned = 1;
+        }
+
+        //vengono settati tutti gli altri parametri
+        gameSession.uid = req.body.uid;
+        gameSession.time_stamp = full;
+        gameSession.play = false;
+        gameSession.number_error = 0;
+        gameSession.number_img_done = 0;
+        gameSession.time_total = 0;
+        gameSession.img = [];
+
+
+        // viene salvata la nuova sessione e controllo che sia stata creata correttamente
+        gameSession.save(function (err, sessCreated) {
+            if (err) { res.status(500).send(err); }
+            res.status(200);
+            res.json(sessCreated);
+        });
+
+      })
   })
   // accessibile in locale tramite DELETE request -> http://localhost:8080/api/games
   // accessibile in remoto tramite DELETE request -> https://cmm-p6.herokuapp.com/api/games
@@ -139,7 +168,7 @@ router.route('/games')
     // mi permette di ottenere le sessioni ancora non giocate da uno specifico uid
     // utilizzata per scopi interni. Per quanto riguarda l'esterno è stata predisposta un'altra API apposita
     .get(function (req, res) {
-        //cerco nel db le sessioni assegnate a un particolare uid ancora non giocate
+        //si ricerca nel db le sessioni assegnate a un particolare uid ancora non giocate
         GameSession.find({uid: req.params.uid, play: false}, function (err, gameSession) {
             if (err) { res.status(500).send(err)}
             if (gameSession) {
@@ -171,7 +200,7 @@ router.route('/games')
            gameSession[0].img.push(JSON.parse(obj));
            gameSession[0].number_img_done++;
 
-           // salvo la sessione modificata nel database
+           // viene salvata la sessione modificata nel database
            gameSession[0].save(function (err) {
                if (err) { res.send(err); }
                res.json({ status: 200 });
@@ -232,7 +261,7 @@ router.route('/games')
 // abilito il middleware route affinche supporti CORS e le richieste preflighted
 // abilitando CORS il mio server può ricevere richieste da altri domini, altrimenti non sarebbe abilitato
 app.use(function (req, res, next) {
-    // stampo in console del server che ho ricevuto una richiesta
+    // viene stampato in console del server che ho ricevuto una richiesta
     console.log('Ricevuto richiesta.');
 
     //abilito CORS
@@ -258,10 +287,10 @@ app.use(function (req, res, next) {
 });
 
 
-// registriamo tutte le nostre rotte prima definite sotto /api
+// vengono registrate tutte le nostre rotte prima definite sotto /api
 app.use('/api', router);
 
-// catturo le richieste non valide
+// vengono catturate le richieste non valide
 app.use((req, res, next) => {
     const err = new Error('Not Found');
     err.status = 404;
@@ -272,6 +301,6 @@ app.use((err, req, res, next) => {
     res.json({ error: { message: err.message } });
 });
 
-// avvio il servizio sulla giusta porta
+// viene avviato il servizio sulla giusta porta
 app.listen(port);
 console.log('Avviato servizio sulla porta ' + port);

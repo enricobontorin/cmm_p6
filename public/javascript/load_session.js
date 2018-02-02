@@ -1,6 +1,6 @@
 $(document).ready(function(){
   // root su cui andare a fare la richiesta fetch
-  //var rootLoad = "http://localhost:8080/api/games";
+  // var rootLoad = "http://localhost:8080/api/games";
   var rootLoad = "https://cmm-p6.herokuapp.com/api/games" //heroku url
 
   // quando viene cliccato il bottone di caricamento vengo presi i dati dai campi input
