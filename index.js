@@ -162,7 +162,7 @@ router.route('/games')
         console.log(query);
           GameSession.remove(query, function (err, gameSession) {
              if (err) { res.send(err); }
-             if (!gameSession) res.json({ message: "Sessione eliminata" });
+             if (!GameSession) res.json({ message: "Sessione eliminata" });
              else {
                res.status(404);
                res.json({ message: "Nessuna sessione da eliminare" });
