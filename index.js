@@ -162,7 +162,7 @@ router.route('/games')
         console.log(query);
           GameSession.remove(query, function (err, gameSession) {
              if (err) { res.send(err); }
-             if (!GameSession) res.json({ message: "Sessione eliminata" });
+             if (!gameSession.length) res.json({ message: "Sessione eliminata" });
              else {
                res.status(404);
                res.json({ message: "Nessuna sessione da eliminare" });
@@ -199,7 +199,7 @@ router.route('/games')
        // il time_stamp in modo che si riesca ad andare ad aggiornare la giusta sessione di gioco
        GameSession.find({uid: req.params.uid, time_stamp: req.body.time_stamp}, function (err, gameSession){
            if (err) { res.send(err); }
-           if(!GameSession){
+           if(!gameSession.length){
              // vengo aggiornati i vari campi, viene inoltre controllata la parola scelta se
              // corrisponde alla parola giusta, in caso negativo viene incrementato il numero di errori
              if(req.body.picked_word != req.body.tag) gameSession[0].number_error++;
