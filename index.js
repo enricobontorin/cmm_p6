@@ -79,7 +79,7 @@ router.route('/games')
 
       // controllo vi sia un username valido altrimenti viene ritornato
       // un messaggio che lo notifica
-      if(req.body.uid 1= null){
+      if(req.body.uid != null && req.body.uid != ""){
         // viene creato un timeStamp della richiesta
         var data = new Date();
         var hours, min, sec, day, month, year, full;
