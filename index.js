@@ -162,7 +162,11 @@ router.route('/games')
         console.log(query);
           GameSession.remove(query, function (err, gameSession) {
              if (err) { res.send(err); }
-             res.json({ message: "Sessione Eliminata" });
+             if (!gameSession) res.json({ message: "Sessione eliminata" });
+             else {
+               res.status(404);
+               res.json({ message: "Nessuna sessione da eliminare" });
+             }
           });
       }
       else {
@@ -215,7 +219,8 @@ router.route('/games')
              });
            }
            else {
-             res.status(404).send('User not found');
+             res.status(404);
+             res.json({ message: 'Utente non trovato' });
            }
        });
    })
@@ -302,7 +307,7 @@ app.use('/api', router);
 
 // vengono catturate le richieste non valide
 app.use((req, res, next) => {
-    const err = new Error('Not Found');
+    const err = new Error('Non trovato');
     err.status = 404;
     next(err);
 });
