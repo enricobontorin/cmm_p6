@@ -77,73 +77,81 @@ router.route('/games')
 // calcola automaticamente il giorno e l'ora dell'assegnamento
   .post(function (req, res) {
 
-      //viene creato un timeStamp della richiesta
-      var data = new Date();
-      var hours, min, sec, day, month, year, full;
-      year = data.getFullYear();
-      month = data.getMonth() + 1; //js conta i mesi da 0 a 11
-      day = data.getDate();
-      hours = data.getHours();
-      min = data.getMinutes();
-      sec = data.getSeconds();
-      if (sec < 10) sec = "0" + sec;
-      if (min < 10) min = "0" + min;
-      if (hours < 10) hours = "0" + hours;
-      if (day < 10) day = "0" + day;
-      if (month < 10) month = "0" + month;
-      full = year + "/" + month + "/" + day + "-" + hours + ":" + min + ":" + sec;
+      // controllo vi sia un username valido altrimenti viene ritornato
+      // un messaggio che lo notifica
+      if(req.body.uid 1= null){
+        // viene creato un timeStamp della richiesta
+        var data = new Date();
+        var hours, min, sec, day, month, year, full;
+        year = data.getFullYear();
+        month = data.getMonth() + 1; //js conta i mesi da 0 a 11
+        day = data.getDate();
+        hours = data.getHours();
+        min = data.getMinutes();
+        sec = data.getSeconds();
+        if (sec < 10) sec = "0" + sec;
+        if (min < 10) min = "0" + min;
+        if (hours < 10) hours = "0" + hours;
+        if (day < 10) day = "0" + day;
+        if (month < 10) month = "0" + month;
+        full = year + "/" + month + "/" + day + "-" + hours + ":" + min + ":" + sec;
 
-      // viene creata una nuova instanza di tipo GameSession, che è la forma del documento che ho definito
-      // per poi salvare i dati nel db, e vado ad assegnare i parametri ricevuti e quelli con valore di default
-      var gameSession = new GameSession();
-
-
-      // il conto dei file all'interno della cartella delle immagini viene fatto utilizzando
-      // il meccanismo delle promise, che è molto utilizzato in js, in quanto essendo a sincrono
-      // altrimenti, come in questo caso, quando di mezzo ci sono letture su file nelle directory,
-      // il motore js va avanti a fare dell'altro e quindi il numero delle immagini arriva solamente dopo la sua valutazione
-      // in questo modo si blocca tutto il sistema fino a che la funzione che fa il calcolo del numero di file in una
-      // cartella non finisce il suo lavoro e poi, dopo il then, riparte tutto andando a settare i parametri corretti
-      // e caricando la sessione nel db
-      CountFileImg(imgFolder).then(function(number_img_folder){
-        // viene controllato che il numero di immagini per la sessione sia maggiore o uguale a uno
-        // e minore o uguale del numero di immagini presenti nella cartella delle immagini di gioco
-        // viene controllato che sia un intero altrimenti tolgo la parte dopo la virgola
-        // vienen controllato  che non sia null, in tutti i casi in cui sia minore del minimo
-        // null o maggiore del massimo viene impostato il valore nel limite
-        //caso in cui non sia un numero
-        if(isNaN(req.body.number_img_assigned)) gameSession.number_img_assigned = 1;
-        //caso in cui sia un numero, lo parso a intero e poi faccio le valutazioni
-        else {
-          var n_img_input = parseInt(Math.round(parseFloat(req.body.number_img_assigned)));
-          if(req.body.number_img_assigned >= 1 && n_img_input <= number_img_folder && number_img_folder > 0)
-            gameSession.number_img_assigned = n_img_input;
-          else if (req.body.number_img_assigned < 1)
-            gameSession.number_img_assigned = 1;
-          else if (n_img_input > number_img_folder && number_img_folder > 0 )
-            gameSession.number_img_assigned = number_img_folder;
-          else
-            gameSession.number_img_assigned = 1;
-        }
-
-        //vengono settati tutti gli altri parametri
-        gameSession.uid = req.body.uid;
-        gameSession.time_stamp = full;
-        gameSession.play = false;
-        gameSession.number_error = 0;
-        gameSession.number_img_done = 0;
-        gameSession.time_total = 0;
-        gameSession.img = [];
+        // viene creata una nuova instanza di tipo GameSession, che è la forma del documento che ho definito
+        // per poi salvare i dati nel db, e vado ad assegnare i parametri ricevuti e quelli con valore di default
+        var gameSession = new GameSession();
 
 
-        // viene salvata la nuova sessione e controllo che sia stata creata correttamente
-        gameSession.save(function (err, sessCreated) {
-            if (err) { res.status(500).send(err); }
-            res.status(200);
-            res.json(sessCreated);
-        });
+        // il conto dei file all'interno della cartella delle immagini viene fatto utilizzando
+        // il meccanismo delle promise, che è molto utilizzato in js, in quanto essendo a sincrono
+        // altrimenti, come in questo caso, quando di mezzo ci sono letture su file nelle directory,
+        // il motore js va avanti a fare dell'altro e quindi il numero delle immagini arriva solamente dopo la sua valutazione
+        // in questo modo si blocca tutto il sistema fino a che la funzione che fa il calcolo del numero di file in una
+        // cartella non finisce il suo lavoro e poi, dopo il then, riparte tutto andando a settare i parametri corretti
+        // e caricando la sessione nel db
+        CountFileImg(imgFolder).then(function(number_img_folder){
+          // viene controllato che il numero di immagini per la sessione sia maggiore o uguale a uno
+          // e minore o uguale del numero di immagini presenti nella cartella delle immagini di gioco
+          // viene controllato che sia un intero altrimenti tolgo la parte dopo la virgola
+          // vienen controllato  che non sia null, in tutti i casi in cui sia minore del minimo
+          // null o maggiore del massimo viene impostato il valore nel limite
+          //caso in cui non sia un numero
+          if(isNaN(req.body.number_img_assigned)) gameSession.number_img_assigned = 1;
+          //caso in cui sia un numero, lo parso a intero e poi faccio le valutazioni
+          else {
+            var n_img_input = parseInt(Math.round(parseFloat(req.body.number_img_assigned)));
+            if(req.body.number_img_assigned >= 1 && n_img_input <= number_img_folder && number_img_folder > 0)
+              gameSession.number_img_assigned = n_img_input;
+            else if (req.body.number_img_assigned < 1)
+              gameSession.number_img_assigned = 1;
+            else if (n_img_input > number_img_folder && number_img_folder > 0 )
+              gameSession.number_img_assigned = number_img_folder;
+            else
+              gameSession.number_img_assigned = 1;
+          }
 
-      })
+          //vengono settati tutti gli altri parametri
+          gameSession.uid = req.body.uid;
+          gameSession.time_stamp = full;
+          gameSession.play = false;
+          gameSession.number_error = 0;
+          gameSession.number_img_done = 0;
+          gameSession.time_total = 0;
+          gameSession.img = [];
+
+
+          // viene salvata la nuova sessione e controllo che sia stata creata correttamente
+          gameSession.save(function (err, sessCreated) {
+              if (err) { res.status(500).send(err); }
+              res.status(200);
+              res.json(sessCreated);
+          });
+
+        })
+      }
+      else {
+        res.status(200);
+        res.json({ message: "Inserire nome utente" });
+      }
   })
   // accessibile in locale tramite DELETE request -> http://localhost:8080/api/games
   // accessibile in remoto tramite DELETE request -> https://cmm-p6.herokuapp.com/api/games
@@ -187,25 +195,28 @@ router.route('/games')
        // il time_stamp in modo che si riesca ad andare ad aggiornare la giusta sessione di gioco
        GameSession.find({uid: req.params.uid, time_stamp: req.body.time_stamp}, function (err, gameSession){
            if (err) { res.send(err); }
+           if(!GameSession){
+             // vengo aggiornati i vari campi, viene inoltre controllata la parola scelta se
+             // corrisponde alla parola giusta, in caso negativo viene incrementato il numero di errori
+             if(req.body.picked_word != req.body.tag) gameSession[0].number_error++;
+             gameSession[0].time_total += req.body.time_word;
+             gameSession[0].play = true;
 
-           // vengo aggiornati i vari campi, viene inoltre controllata la parola scelta se
-           // corrisponde alla parola giusta, in caso negativo viene incrementato il numero di errori
-           if(req.body.picked_word != req.body.tag) gameSession[0].number_error++;
-           gameSession[0].time_total += req.body.time_word;
-           gameSession[0].play = true;
+             // viene creato l'oggetto immagine per poi inserirlo e tenere traccia di
+             // ogni singola immagine proposta, parola scelta  e relativo tempo
+             var obj = '{ "tag": "' + req.body.tag + '", "scelta": "' + req.body.picked_word + '", "time_word": "' + req.body.time_word + 's"}';
+             gameSession[0].img.push(JSON.parse(obj));
+             gameSession[0].number_img_done++;
 
-           // viene creato l'oggetto immagine per poi inserirlo e tenere traccia di
-           // ogni singola immagine proposta, parola scelta  e relativo tempo
-           var obj = '{ "tag": "' + req.body.tag + '", "scelta": "' + req.body.picked_word + '", "time_word": "' + req.body.time_word + 's"}';
-           gameSession[0].img.push(JSON.parse(obj));
-           gameSession[0].number_img_done++;
-
-           // viene salvata la sessione modificata nel database
-           gameSession[0].save(function (err) {
-               if (err) { res.send(err); }
-               res.json({ status: 200 });
-           });
-
+             // viene salvata la sessione modificata nel database
+             gameSession[0].save(function (err) {
+                 if (err) { res.send(err); }
+                 res.json({ status: 200 });
+             });
+           }
+           else {
+             res.status(404).send('User not found');
+           }
        });
    })
 
